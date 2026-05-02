@@ -9,12 +9,14 @@ This project fetches real-time orbital data of the International Space Station (
 - **Time Conversion:** Automatically converts Unix timestamps to human-readable format using the `ctime` library.
 - **Robust Networking:** Handles HTTP error codes and WiFi reconnections.
 - **Clean Architecture:** Developed using **PlatformIO** with a modular function-based structure.
+- **Auto Location Detection:** Auto-location detection via IP-API to notify when ISS is over the user's country using an LED.
 
 ## Hardware & Tools
 - **Microcontroller:** ESP32
 - **Framework:** Arduino
 - **IDE:** VS Code + PlatformIO
 - **Libraries:** `ArduinoJson`, `HTTPClient`
+- **Circuit:** An external LED connected to the GPIO Pin 22 on the ESP32
 
 ## How to Use
 1. **Clone the repository:**
@@ -27,4 +29,3 @@ This project fetches real-time orbital data of the International Space Station (
 
 ## 📈 Future Goals
 - Integration of an I2C LCD/OLED display for standalone usage.
-- Distance calculation to a fixed coordinate (e.g., Istanbul).

@@ -6,16 +6,23 @@
 
 // Wifi credentials
 
-const char* ssid = "***REMOVED***";
-const char* password = "***REMOVED***";
+const char* ssid = "YOUR_SSID";
+const char* password = "YOUR_PASSWORD";
 
+// defining the led pin
+#define LED_PIN 22
+
+// Variable to store the country code of the ESP32's location
+String esp32CountryCode = "N/A";
 
 // function declaration
 String formatTimeStamp(long timestamp);
+String getEsp32CountryCode();
 
 
 void setup() {
   Serial.begin(115200);
+  pinMode(LED_PIN, OUTPUT); // Initialize the LED pin as an output
   // Connect to Wi-Fi
   WiFi.begin(ssid, password);
   Serial.print("Connecting to WiFi");
@@ -27,6 +34,10 @@ void setup() {
   Serial.println("Connected to WiFi");
   Serial.print("IP Address: ");
   Serial.println(WiFi.localIP());
+  // Set the current country code based on the location of the microcontroller
+  esp32CountryCode = getEsp32CountryCode();
+  Serial.print("ESP32 Country Code: ");
+  Serial.println(esp32CountryCode);
 
 }
 
@@ -61,7 +72,9 @@ void loop() {
       if (httpCode > 0) {
         JsonDocument locationDoc;
         deserializeJson(locationDoc, client.getStream());
+        // The API returns an object with a "country_code" field that contains the country code or "??" if it's over the ocean
         countryCode = locationDoc["country_code"].as<String>();
+        client.end(); // Close the connection
       }
       else {
         Serial.println("Error on HTTP request for country code");
@@ -74,8 +87,18 @@ void loop() {
       Serial.print(longitude, 6);
       Serial.print(" | Timestamp: ");
       Serial.print(formattedTime);
+      Serial.print(" UTC");
       Serial.print(" | Country Code: ");
+      // If the country code is "??", it means the ISS is over the ocean, so we print "N/A" instead
       Serial.println((countryCode == "??") ? "N/A" : countryCode);
+
+      if (countryCode != "??" && countryCode == esp32CountryCode) {
+        Serial.println("The ISS is currently over the same country as the ESP32!");
+        digitalWrite(LED_PIN, HIGH); // Turn on the LED
+      }
+      else {
+        digitalWrite(LED_PIN, LOW); // Turn off the LED
+      }
 
     }
     // if the request failed, print the error code
@@ -86,7 +109,7 @@ void loop() {
   else {
     Serial.println("Connection lost");
   }
-  delay(10000); // Update every 10 seconds
+  delay(3000); // Update every 3 seconds
 }
 
 // Function to format the timestamp into a human-readable string
@@ -97,5 +120,25 @@ String formatTimeStamp(long timestamp) {
   timeInfo = localtime(&rawTime);
   strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", timeInfo);
   return String(buffer);
+
+}
+
+// Function to get the current country code based on the location of the microcontroller
+String getEsp32CountryCode() {
+  HTTPClient client;
+  client.begin("http://ip-api.com/json/?fields=countryCode"); // Make a request to an IP geolocation API
+  int httpCode = client.GET(); // Make the request
+
+  if (httpCode > 0) {
+    JsonDocument doc;
+    deserializeJson(doc, client.getStream());
+    String countryCode = doc["countryCode"].as<String>();
+    client.end(); // Close the connection
+    return countryCode;
+  }
+  else {
+    Serial.println("Error on HTTP request for country code");
+    return "N/A";
+  }
 
 }
