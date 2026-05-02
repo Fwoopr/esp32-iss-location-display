@@ -2,14 +2,14 @@
 
 This project fetches real-time orbital data of the International Space Station (ISS) using an ESP32 and the "Where the ISS at?" REST API.
 
-![Demo PNG](demo.png)
+![Demo PNG](demo_new.png)
 
 ## Features
 - **Parsing:** Uses `ArduinoJson` to parse the Json response.
 - **Time Conversion:** Automatically converts Unix timestamps to human-readable format using the `ctime` library.
 - **Robust Networking:** Handles HTTP error codes and WiFi reconnections.
 - **Clean Architecture:** Developed using **PlatformIO** with a modular function-based structure.
-- **Auto Location Detection:** Auto-location detection via IP-API to notify when ISS is over the user's country using an LED.
+- **Auto Location Detection:** Auto-location detection via IP-API to notify when ISS is over the user's country using an LED. (N/A if crossing over the ocean.)
 
 ## Hardware & Tools
 - **Microcontroller:** ESP32
