@@ -6,8 +6,8 @@
 
 // Wifi credentials
 
-const char* ssid = "Your_SSID";
-const char* password = "Your_Password";
+const char* ssid = "***REMOVED***";
+const char* password = "***REMOVED***";
 
 
 // function declaration
@@ -52,20 +52,36 @@ void loop() {
       // Format the timestamp into a human-readable string
       String formattedTime = formatTimeStamp(timestamp);
 
+      client.end(); // Close the connection
+
+      String countryCode = "";
+      client.begin("https://api.wheretheiss.at/v1/coordinates/" + String(latitude, 6) + "," + String(longitude, 6)); // Make another request to get the location name
+      httpCode = client.GET(); // Make the request
+
+      if (httpCode > 0) {
+        JsonDocument locationDoc;
+        deserializeJson(locationDoc, client.getStream());
+        countryCode = locationDoc["country_code"].as<String>();
+      }
+      else {
+        Serial.println("Error on HTTP request for country code");
+      }
+
       // Print the ISS location and timestamp to the Serial Monitor
       Serial.print("Latitude: ");
       Serial.print(latitude, 6);
       Serial.print(" | Longitude: ");
       Serial.print(longitude, 6);
       Serial.print(" | Timestamp: ");
-      Serial.println(formattedTime);
+      Serial.print(formattedTime);
+      Serial.print(" | Country Code: ");
+      Serial.println((countryCode == "??") ? "N/A" : countryCode);
 
     }
     // if the request failed, print the error code
     else {
       Serial.println("Error on HTTP request");
     }
-    client.end(); // Free the resources
   }
   else {
     Serial.println("Connection lost");
