@@ -6,8 +6,8 @@
 
 // Wifi credentials
 
-const char* ssid = "YOUR_SSID";
-const char* password = "YOUR_PASSWORD";
+const char* ssid = "***REMOVED***";
+const char* password = "***REMOVED***";
 
 // defining the led pin
 #define LED_PIN 22
@@ -109,7 +109,7 @@ void loop() {
   else {
     Serial.println("Connection lost");
   }
-  delay(3000); // Update every 3 seconds
+  delay(10000); // Update every 10 seconds
 }
 
 // Function to format the timestamp into a human-readable string
