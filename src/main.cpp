@@ -6,8 +6,8 @@
 
 // Wifi credentials
 
-const char* ssid = "***REMOVED***";
-const char* password = "***REMOVED***";
+const char* ssid = "YOUR_WIFI_SSID";
+const char* password = "YOUR_WIFI_PASSWORD";
 
 // defining the led pin
 #define LED_PIN 22
