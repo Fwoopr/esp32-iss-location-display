@@ -10,7 +10,7 @@ This project fetches real-time orbital data of the International Space Station (
 - **Robust Networking:** Handles HTTP error codes and WiFi reconnections.
 - **Clean Architecture:** Developed using **PlatformIO** with a modular function-based structure.
 - **Auto Location Detection:** Auto-location detection via IP-API to notify when ISS is over the user's country using an LED. (N/A if crossing over the ocean.)
-- **External Display:** 
+- **External Display:** Allows standalone usage.
 
 ## Hardware & Tools
 - **Microcontroller:** ESP32
