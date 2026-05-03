@@ -27,6 +27,3 @@ This project fetches real-time orbital data of the International Space Station (
 2. **Open it with PlatformIO.** (PlatformIO will automatically handle library dependencies defined in `platformio.ini`.)
 3. **Replace the WiFi credentials in `src/main.cpp`.**
 4. **Upload to your ESP32 and open the Serial Monitor** (115200 baud).
-
-## 📈 Future Goals
-- Integration of an I2C LCD/OLED display for standalone usage.
